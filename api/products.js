@@ -1,7 +1,7 @@
 // Sends the product list to the website. Keys stay on the server (set in Vercel).
 module.exports = async (req, res) => {
-  const base = (process.env.SUPABASE_URL || "").replace(/\/+$/, "");
-  const key = process.env.SUPABASE_SERVICE_KEY || "";
+  const base = (process.env.SUPABASE_URL || "").trim().replace(/\/+$/, "");
+  const key = (process.env.SUPABASE_SERVICE_KEY || "").trim();
   if (!base || !key) return res.status(500).json({ error: "Server not configured" });
 
   const headers = { apikey: key };
@@ -15,11 +15,24 @@ module.exports = async (req, res) => {
 
   try {
     const r = await fetch(url, { headers });
-    if (!r.ok) return res.status(502).json({ error: "Could not load products" });
-    const data = await r.json();
+    const text = await r.text();
+    if (!r.ok) {
+      return res.status(502).json({
+        error: "Could not load products",
+        status: r.status,
+        detail: text.slice(0, 300),
+        url_start: base.slice(0, 30),
+        key_start: key.slice(0, 6),
+      });
+    }
     res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=300");
-    return res.status(200).json(data);
+    return res.status(200).json(JSON.parse(text));
   } catch (e) {
-    return res.status(502).json({ error: "Could not load products" });
+    return res.status(502).json({
+      error: "Could not load products",
+      detail: String(e && e.message ? e.message : e),
+      url_start: base.slice(0, 30),
+      key_start: key.slice(0, 6),
+    });
   }
 };
