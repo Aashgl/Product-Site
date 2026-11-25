@@ -148,6 +148,8 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-siz
 .bd{position:absolute;top:20px;right:18px;display:flex;align-items:center;gap:6px;font:700 9px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:#5d6b82}.bd::before{content:"";width:6px;height:6px;border-radius:50%;background:#12a56a}
 .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.1em;color:#7b8aa3}
 .foot{font-size:12px;color:var(--mut)}.rq{display:flex;align-items:center;gap:5px}.rq svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.toast{position:fixed;left:50%;top:88px;transform:translate(-50%,-16px);background:#0d1b34;color:#fff;padding:14px 22px 14px 16px;border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:20;display:flex;gap:12px;align-items:center;max-width:90vw;font-size:14px;font-weight:600}
+.toast.on{opacity:1;transform:translate(-50%,0)}.toast::before{content:"\2713";background:#1fa86b;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;font-weight:800;flex:none}
 footer .f3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}footer b{color:var(--ink)}footer p{margin:6px 0 0;line-height:1.6}footer a{color:var(--brand);text-decoration:none}footer .cp{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 @media(max-width:900px){footer .f3{grid-template-columns:1fr}}
 @media(max-width:900px){.hero .in,.cols,.how{grid-template-columns:1fr}.stage{zoom:.9}h1{font-size:40px}nav .l{display:none}nav .in{gap:12px}.fp{position:static}.sh,.band,.sb{flex-direction:column;align-items:stretch}}
@@ -184,6 +186,7 @@ footer .f3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}footer b{co
 <div><b>Visit us</b><p>Supertech Ecociti, Sector 137,<br>Gautam Budh Nagar, Noida UP - 201304</p></div></div>
 <div class="in cp">Prices and availability are confirmed with every quote. &copy; 2026 Ivaan Technology. All rights reserved. <a href="#top">Back to top &uarr;</a></div></footer>
 <a class="fab" id="fab" target="_blank" rel="noopener">Let's talk</a>
+<div class="toast" id="toast" role="status"></div>
 <div class="modal" id="modal"><div class="box"><h3>Get a quote</h3><div class="sub" id="pname"></div>
 <label for="f_name">Your name</label><input id="f_name" autocomplete="name"><label for="f_phone">Phone / WhatsApp number</label><input id="f_phone" type="tel" autocomplete="tel" placeholder="+91 ...">
 <label for="f_msg">Message (quantity, location, etc.)</label><textarea id="f_msg"></textarea><input class="hp" id="f_web" tabindex="-1" autocomplete="off" aria-hidden="true"><div id="msg"></div>
@@ -220,13 +223,14 @@ $("#mk").addEventListener("change",function(){S.m=this.value;draw()});
 $("#so").addEventListener("change",function(){S.s=this.value;draw()});$("#q").addEventListener("input",function(){S.q=this.value.toLowerCase().trim();draw()});
 $("#navcat").addEventListener("click",function(){setTimeout(function(){$("#q").focus()},500)});
 if(waOk){$("#fab").href=waUrl("Hi, I'd like a quote")}else{$("#fab").style.display="none"}
+function toast(s){var e=$("#toast");e.textContent=s;e.classList.add("on");clearTimeout(window.__tt);window.__tt=setTimeout(function(){e.classList.remove("on")},5000)}
 function openM(p){cur=p;$("#pname").textContent=p?p.name+(p.make?" ("+p.make+(p.model?" "+p.model:"")+")":""):"Tell us what you need and we will reply with a quote.";$("#f_msg").value="";$("#msg").textContent="";$("#send").disabled=false;$("#modal").classList.add("open")}
 ["#gq","#hp1","#hp2","#hp3"].forEach(function(s){$(s).addEventListener("click",function(){openM(null)})});
 $("#grid").addEventListener("click",function(e){var b=e.target.closest("button[data-id]");if(!b)return;var id=b.getAttribute("data-id");openM(all.filter(function(x){return String(x.id)===id})[0])});
 $("#close").addEventListener("click",function(){$("#modal").classList.remove("open")});
 $("#send").addEventListener("click",function(){var m=$("#msg"),b=this;m.className="";m.textContent="Sending...";b.disabled=true;
   fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({product_id:cur?cur.id:null,name:$("#f_name").value,phone:$("#f_phone").value,message:$("#f_msg").value,website:$("#f_web").value})})
-  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){if(x.ok){m.className="ok";m.textContent="Thank you! We have your enquiry and will contact you soon."}else{m.className="err";m.textContent=x.j.error||"Something went wrong.";b.disabled=false}})
+  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){if(x.ok){$("#modal").classList.remove("open");["#f_name","#f_phone","#f_msg"].forEach(function(s){$(s).value=""});m.textContent="";b.disabled=false;toast("Thank you! We have your enquiry and will contact you soon.")}else{m.className="err";m.textContent=x.j.error||"Something went wrong.";b.disabled=false}})
   .catch(function(){m.className="err";m.textContent="Network error. Please try again.";b.disabled=false})});
 var rd=false,vis=false,done=false;
 function countUp(){var red=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;document.querySelectorAll("[data-to]").forEach(function(e){var to=+e.getAttribute("data-to"),suf=e.getAttribute("data-s")||"",t0=null;if(red){e.textContent=to+suf;return}function f(ts){t0=t0||ts;var p=Math.min((ts-t0)/1200,1);e.textContent=Math.round(to*(1-Math.pow(1-p,3)))+suf;if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f)})}
