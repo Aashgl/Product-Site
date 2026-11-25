@@ -129,6 +129,25 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-siz
 .rq{background:none;border:0;color:var(--brand);font:700 13px Inter,sans-serif;cursor:pointer;padding:0}.rq:hover{text-decoration:underline}.wa2{color:#1fa855;font:700 12px Inter,sans-serif;text-decoration:none}
 @media(max-width:900px){.edge .in{grid-template-columns:1fr}.gl{width:min(100%,340px)}.hl{display:none}}
 @media(prefers-reduced-motion:reduce){.gl *{animation:none!important}}
+.card[data-c="OLT"]{--tb:#e8efff;--ti:#3b5bdb}
+.card[data-c="ONT"]{--tb:#e3f6ee;--ti:#12915f}
+.card[data-c="Switches"]{--tb:#fdf0dc;--ti:#c27c18}
+.card[data-c="Optics"]{--tb:#efeaff;--ti:#6d4fe0}
+.card[data-c="Fiber cable"]{--tb:#e0f4f8;--ti:#0f8fa8}
+.card[data-c="ODN"]{--tb:#e4f2ff;--ti:#1d78c1}
+.card[data-c="PON accessories"]{--tb:#f3e8ff;--ti:#9333ea}
+.card[data-c="Routing"]{--tb:#e9ebff;--ti:#4338ca}
+.card[data-c="Wireless"]{--tb:#e0f7fa;--ti:#0e7490}
+.card[data-c="Firewall"]{--tb:#ffe9e9;--ti:#d03a3a}
+.card[data-c="Racks & power"]{--tb:#eaeef4;--ti:#475569}
+.card[data-c="Tools & testing"]{--tb:#ffece0;--ti:#d9590f}
+.card .ico{position:relative;overflow:hidden;width:56px;height:56px;border-radius:16px;background:var(--tb,#e8efff);color:var(--ti,#3b5bdb);margin:0 0 8px}
+.card .ico::before{content:"";position:absolute;left:-20px;top:-20px;width:52px;height:52px;border:1px solid currentColor;border-radius:50%;opacity:.28}
+.card .ico svg{width:30px;height:30px;position:relative;stroke-width:1.7;filter:none}.card .ico .a{stroke:currentColor;opacity:.55}.card .ico .f{fill:currentColor}
+.card .ico.photo{width:100%;height:150px;border-radius:12px;background:#fff}.card .ico.photo::before{display:none}
+.bd{position:absolute;top:20px;right:18px;display:flex;align-items:center;gap:6px;font:700 9px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:#5d6b82}.bd::before{content:"";width:6px;height:6px;border-radius:50%;background:#12a56a}
+.tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.1em;color:#7b8aa3}
+.foot{font-size:12px;color:var(--mut)}.rq{display:flex;align-items:center;gap:5px}.rq svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 footer .f3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}footer b{color:var(--ink)}footer p{margin:6px 0 0;line-height:1.6}footer a{color:var(--brand);text-decoration:none}footer .cp{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 @media(max-width:900px){footer .f3{grid-template-columns:1fr}}
 @media(max-width:900px){.hero .in,.cols,.how{grid-template-columns:1fr}.stage{zoom:.9}h1{font-size:40px}nav .l{display:none}nav .in{gap:12px}.fp{position:static}.sh,.band,.sb{flex-direction:column;align-items:stretch}}
@@ -171,8 +190,8 @@ footer .f3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}footer b{co
 <div class="rw"><button class="btn pri" id="send">Send enquiry</button><button class="btn out" id="close">Close</button></div></div></div>
 
 <script>
-// >>> EDIT THIS: your WhatsApp number, country code + digits only (example: 917835957990)
-var WA="918827439741";
+// >>> EDIT THIS: your WhatsApp number, country code + digits only (example: 919876543210)
+var WA="917835957990";
 var all=[],cur=null,S={t:"",c:"",m:"",q:"",s:"rec"};
 var $=function(s){return document.querySelector(s)};
 var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
@@ -191,9 +210,9 @@ function draw(){
   var l=filt().slice();if(S.s!=="rec"){var k=S.s==="name"?"name":"make";l.sort(function(a,b){return String(a[k]).localeCompare(String(b[k]))})}
   $("#cnt").textContent="Showing "+l.length+" of "+all.length+" items";
   $("#grid").innerHTML=l.length?l.map(function(p){var t="Hi, I'm interested in: "+p.name+(p.make?" ("+p.make+(p.model?" "+p.model:"")+")":"");
-    return '<article class="card">'+(p.image_url?'<div class="ico photo"><img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy"></div>':"")+
+    return '<article class="card" data-c="'+esc(p.category)+'"><span class="bd">Quote ready</span>'+(p.image_url?'<div class="ico photo"><img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy"></div>':"")+
     '<span class="tag">'+esc(p.type)+" · "+esc(p.category)+'</span><h3>'+esc(p.name)+'</h3><div class="meta">'+esc(p.make)+(p.model?" · "+esc(p.model):"")+'</div><p class="spec">'+esc(p.key_spec)+'</p>'+
-    '<div class="foot"><button class="rq" data-id="'+esc(p.id)+'">Request quote &rarr;</button>'+(waOk?'<a class="wa2" target="_blank" rel="noopener" href="'+esc(waUrl(t))+'">WhatsApp</a>':"")+'</div></article>'}).join(""):'<div class="em">No items match. Try clearing the filters.</div>';
+    '<div class="foot"><span>'+esc(p.category)+'</span><button class="rq" data-id="'+esc(p.id)+'">Request quote <svg viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></svg></button></div></article>'}).join(""):'<div class="em">No items match. Try clearing the filters.</div>';
 }
 document.querySelectorAll(".tc").forEach(function(b){b.addEventListener("click",function(){S.t=b.getAttribute("data-t");S.c="";draw()})});
 $("#cl").addEventListener("click",function(e){var b=e.target.closest(".cr");if(!b)return;S.c=b.getAttribute("data-c");draw()});
