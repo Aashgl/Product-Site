@@ -150,6 +150,15 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-siz
 .foot{font-size:12px;color:var(--mut)}.rq{display:flex;align-items:center;gap:5px}.rq svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .toast{position:fixed;left:50%;top:88px;transform:translate(-50%,-16px);background:#0d1b34;color:#fff;padding:14px 22px 14px 16px;border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:20;display:flex;gap:12px;align-items:center;max-width:90vw;font-size:14px;font-weight:600}
 .toast.on{opacity:1;transform:translate(-50%,0)}.toast::before{content:"\2713";background:#1fa86b;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;font-weight:800;flex:none}
+.fab{border:0;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:inherit;background:var(--brand);box-shadow:0 8px 24px rgba(31,79,216,.45)}
+.cb{position:fixed;right:18px;bottom:calc(84px + env(safe-area-inset-bottom,0px));width:360px;max-width:calc(100vw - 24px);height:520px;max-height:calc(100vh - 110px);background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(13,27,52,.3);display:none;flex-direction:column;z-index:8;overflow:hidden;border:1px solid var(--line)}.cb.open{display:flex}
+.ch{display:flex;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(120deg,#0d1b34,#1f4fd8);color:#fff}.ch b{display:block;font-size:15px}.ch small{opacity:.8;font-size:12px}.ch button{margin-left:auto;background:none;border:0;color:#fff;font-size:26px;cursor:pointer;line-height:1}
+.av{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center}
+.cm{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:8px;background:#f5f8ff}
+.b{max-width:86%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.5;word-wrap:break-word}.b small{color:var(--mut)}.b a{color:var(--brand);font-weight:600}
+.b.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}.b.me{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:4px}
+.cc{display:flex;flex-wrap:wrap;gap:6px}.cc button{padding:7px 12px;border-radius:999px;border:1px solid var(--brand);background:#fff;color:var(--brand);font:600 13px Inter,Arial,sans-serif;cursor:pointer}.cc button:hover{background:var(--brand);color:#fff}
+.cf{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#fff}.cf input{flex:1;padding:11px 14px;border:1px solid var(--line);border-radius:999px;font:400 14px Inter,Arial,sans-serif}.cf button{width:42px;border:0;border-radius:50%;background:var(--brand);color:#fff;font-size:18px;cursor:pointer}
 footer .f3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}footer b{color:var(--ink)}footer p{margin:6px 0 0;line-height:1.6}footer a{color:var(--brand);text-decoration:none}footer .cp{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 @media(max-width:900px){footer .f3{grid-template-columns:1fr}}
 @media(max-width:900px){.hero .in,.cols,.how{grid-template-columns:1fr}.stage{zoom:.9}h1{font-size:40px}nav .l{display:none}nav .in{gap:12px}.fp{position:static}.sh,.band,.sb{flex-direction:column;align-items:stretch}}
@@ -185,7 +194,9 @@ footer .f3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}footer b{co
 <div><b>Contact</b><p><a href="tel:+918827439741">8827439741</a> | <a href="tel:+917835957990">78359 57990</a><br><a href="mailto:Ivaantechnology@gmail.com">Ivaantechnology@gmail.com</a></p></div>
 <div><b>Visit us</b><p>Supertech Ecociti, Sector 137,<br>Gautam Budh Nagar, Noida UP - 201304</p></div></div>
 <div class="in cp">Prices and availability are confirmed with every quote. &copy; 2026 Ivaan Technology. All rights reserved. <a href="#top">Back to top &uarr;</a></div></footer>
-<a class="fab" id="fab" target="_blank" rel="noopener">Let's talk</a>
+<div class="cb" id="cb" role="dialog" aria-label="Chat with the Ivaan assistant"><div class="ch"><span class="av"><svg class="g"><use href="#net"/></svg></span><div><b>Ivaan Assistant</b><small>Find products or request a quote</small></div><button id="cx" aria-label="Close chat">&times;</button></div>
+<div class="cm" id="cm" aria-live="polite"></div><div class="cf"><input id="ci" placeholder="Type your message..." autocomplete="off"><button id="cs" aria-label="Send">&rarr;</button></div></div>
+<button class="fab" id="fab" aria-label="Chat with us"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12z"/></svg>Chat with us</button>
 <div class="toast" id="toast" role="status"></div>
 <div class="modal" id="modal"><div class="box"><h3>Get a quote</h3><div class="sub" id="pname"></div>
 <label for="f_name">Your name</label><input id="f_name" autocomplete="name"><label for="f_phone">Phone / WhatsApp number</label><input id="f_phone" type="tel" autocomplete="tel" placeholder="+91 ...">
@@ -222,7 +233,7 @@ $("#cl").addEventListener("click",function(e){var b=e.target.closest(".cr");if(!
 $("#mk").addEventListener("change",function(){S.m=this.value;draw()});
 $("#so").addEventListener("change",function(){S.s=this.value;draw()});$("#q").addEventListener("input",function(){S.q=this.value.toLowerCase().trim();draw()});
 $("#navcat").addEventListener("click",function(){setTimeout(function(){$("#q").focus()},500)});
-if(waOk){$("#fab").href=waUrl("Hi, I'd like a quote")}else{$("#fab").style.display="none"}
+
 function toast(s){var e=$("#toast");e.textContent=s;e.classList.add("on");clearTimeout(window.__tt);window.__tt=setTimeout(function(){e.classList.remove("on")},5000)}
 function openM(p){cur=p;$("#pname").textContent=p?p.name+(p.make?" ("+p.make+(p.model?" "+p.model:"")+")":""):"Tell us what you need and we will reply with a quote.";$("#f_msg").value="";$("#msg").textContent="";$("#send").disabled=false;$("#modal").classList.add("open")}
 ["#gq","#hp1","#hp2","#hp3"].forEach(function(s){$(s).addEventListener("click",function(){openM(null)})});
@@ -237,6 +248,49 @@ function countUp(){var red=window.matchMedia&&matchMedia("(prefers-reduced-motio
 function tryCount(){if(vis&&rd&&!done){done=true;countUp()}}
 if("IntersectionObserver" in window){new IntersectionObserver(function(en){vis=en[0].isIntersecting||vis;tryCount()},{threshold:.3}).observe($(".st"))}else{vis=true}
 document.addEventListener("keydown",function(e){var tg=(e.target.tagName||"").toLowerCase();if((e.key==="/"&&tg!=="input"&&tg!=="textarea")||(e.key==="k"&&(e.ctrlKey||e.metaKey))){e.preventDefault();$("#q").focus()}});
+(function(){
+var box=$("#cb"),msgs=$("#cm"),inp=$("#ci"),flow=null,lead={},started=false;
+var STOP=" i me we you a an the for to of and or in on is are do have need want looking show get give please price cost quote rate buy details about any some can your my with from what which tell ".split(" ");
+var SYN={fibre:"fiber",onu:"ont",transceiver:"sfp",optical:"optic",optics:"optic",wifi:"wifi"};
+function add(h,w){var d=document.createElement("div");d.className="b "+w;d.innerHTML=h;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+function bot(h,f){setTimeout(function(){add(h,"bot");if(f)f();msgs.scrollTop=msgs.scrollHeight},350)}
+function chips(l){var d=document.createElement("div");d.className="cc";l.forEach(function(c){var b=document.createElement("button");b.textContent=c[0];b.onclick=function(){d.remove();add(esc(c[0]),"me");c[1]()};d.appendChild(b)});msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+function norm(s){return String(s).toLowerCase().replace(/-/g,"")}
+function find(q){var tk=norm(q).replace(/[^a-z0-9+\/. ]/g," ").split(/\s+/).filter(function(x){return x.length>1&&STOP.indexOf(x)<0}).map(function(x){return SYN[x]||x});if(!tk.length)return{list:[],tk:tk};
+  var sc=all.map(function(p){var h=norm(p.name+" "+p.make+" "+p.model+" "+p.key_spec+" "+p.category),s=0;tk.forEach(function(x){if(h.indexOf(x)>-1||(x.length>3&&h.indexOf(x.replace(/(es|s)$/,""))>-1))s++});return{p:p,s:s}}).filter(function(o){return o.s>=Math.max(1,Math.ceil(tk.length/2))});
+  sc.sort(function(a,b){return b.s-a.s});return{list:sc.map(function(o){return o.p}),tk:tk}}
+function menu(){chips([["Find a product",ask],["Get a quote",quote],["Delivery & support",deliv],["Contact details",contact]])}
+function ask(){bot("Tell me what you are looking for, for example &ldquo;GPON OLT&rdquo;, &ldquo;24-port switch&rdquo; or &ldquo;SC/APC pigtail&rdquo;.")}
+function deliv(){bot("We deliver across India. Share what you need and we will confirm availability, pricing and timelines with your quote.",menu)}
+function contact(){bot('Call: <a href="tel:+918827439741">8827439741</a> | <a href="tel:+917835957990">78359 57990</a><br>Email: <a href="mailto:Ivaantechnology@gmail.com">Ivaantechnology@gmail.com</a><br>Visit: Supertech Ecociti, Sector 137, Gautam Budh Nagar, Noida UP - 201304',function(){if(waOk)chips([["Chat on WhatsApp",wa]])})}
+function wa(){if(waOk)bot('<a href="'+esc(waUrl("Hi, I\'d like a quote"))+'" target="_blank" rel="noopener">Open WhatsApp chat &rarr;</a>');else contact()}
+function quote(){flow="name";lead={};bot("Happy to help with a quote. What is your name?")}
+function showAll(q){S.q=q;S.c="";S.t="";S.m="";$("#q").value=q;draw();box.classList.remove("open");$("#catalogue").scrollIntoView({behavior:"smooth"})}
+function results(r,q){var top=r.list.slice(0,3);bot("I found "+r.list.length+" matching item"+(r.list.length>1?"s":"")+". Here "+(top.length>1?"are the closest":"is the closest")+":",function(){
+  top.forEach(function(p){add("<b>"+esc(p.name)+"</b><br>"+esc(p.make)+(p.model?" · "+esc(p.model):"")+"<br><small>"+esc(p.key_spec)+"</small>","bot");chips([["Get a quote for this",function(){openM(p)}]])});
+  var c=[];if(r.list.length>3)c.push(["See all "+r.list.length+" in catalogue",function(){showAll(r.tk.join(" "))}]);c.push(["Request a quote",quote]);chips(c)})}
+function send(){flow=null;var l=lead;fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({product_id:null,name:l.name,phone:l.phone,message:l.message,website:""})})
+  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){if(x.ok){bot("Thank you, "+esc(l.name.split(" ")[0])+"! We have your enquiry and will contact you soon.",function(){chips([["Browse catalogue",function(){box.classList.remove("open");$("#catalogue").scrollIntoView({behavior:"smooth"})}]])})}else{bot(esc(x.j.error||"Something went wrong. Please try again."),menu)}})
+  .catch(function(){bot("Network error. Please try again.",menu)})}
+function step(t){if(flow==="name"){lead.name=t.slice(0,100);flow="phone";return bot("Thanks, "+esc(lead.name.split(" ")[0])+"! What is the best phone or WhatsApp number to reach you?")}
+  if(flow==="phone"){var d=t.replace(/\D/g,"");if(d.length<8||d.length>15)return bot("Please enter a valid phone number, for example 9876543210.");lead.phone=t.slice(0,25);flow="need";return bot("What do you need? Tell us the item, quantity and location.")}
+  if(flow==="need"){lead.message="Chat enquiry: "+t.slice(0,900);send()}}
+function handle(t){var q=t.toLowerCase();if(flow)return step(t);
+  if(/^(hi|hello|hey|namaste)\b/.test(q))return bot("Hello! How can I help you today?",menu);
+  if(/thank/.test(q))return bot("You are welcome! Is there anything else I can help with?",menu);
+  if(/deliver|shipping|dispatch/.test(q))return deliv();
+  if(/contact|phone|call|email|mail|address|office|reach/.test(q))return contact();
+  if(/whatsapp/.test(q))return wa();
+  var r=find(t);if(r.list.length)return results(r,t);
+  if(/quote|price|cost|rate|buy|order|purchase|enquiry|inquiry/.test(q))return quote();
+  bot("I am not sure I understood that. I can search the catalogue, take a quote request, or share our contact details.",menu)}
+function open(){box.classList.add("open");if(!started){started=true;bot("Hi! I am the Ivaan assistant. I can help you find equipment or take your quote request.",menu)}inp.focus()}
+function say(){var t=inp.value.trim();if(!t)return;inp.value="";add(esc(t),"me");handle(t)}
+$("#fab").addEventListener("click",function(){box.classList.contains("open")?box.classList.remove("open"):open()});
+$("#cx").addEventListener("click",function(){box.classList.remove("open")});$("#cs").addEventListener("click",say);
+inp.addEventListener("keydown",function(e){if(e.key==="Enter")say()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")box.classList.remove("open")});
+})();
 fetch("/api/products").then(function(r){return r.json()}).then(function(d){if(!Array.isArray(d))throw 0;all=d;draw();var sc=$("#sc");if(sc)sc.setAttribute("data-to",d.length);rd=true;tryCount()}).catch(function(){$("#grid").innerHTML='<div class="em">We could not load the catalogue. Please refresh.</div>'});
 (function(){var A=document.querySelectorAll(".lgx");if(!A.length||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))return;
 function go(){A.forEach(function(L){L.classList.remove("play");void L.getBoundingClientRect();L.classList.add("play")})}
